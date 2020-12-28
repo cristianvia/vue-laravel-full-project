@@ -9,6 +9,13 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+import {Form, HasError, AlertError } from 'vform';
+
+//Declaring global vue variables to have access to them through the whole app
+window.form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
 Vue.use(VueRouter);
 
 let routes = [
