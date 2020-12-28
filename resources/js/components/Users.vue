@@ -7,7 +7,11 @@
             <h3 class="card-title">Users List</h3>
 
             <div class="card-tools">
-              <button class="btn btn-success" data-toggle="modal" data-target="#addNew">
+              <button
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#addNew"
+              >
                 <i class="fas fa-user-plus"></i> Add new
               </button>
             </div>
@@ -69,13 +73,63 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <div class="form-group">
+              <input
+                v-model="form.name"
+                type="text"
+                name="name"
+                placeholder="Name"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.has('name') }"
+              />
+              <has-error :form="form" field="name"></has-error>
+            </div>
+
+            <div class="form-group">
+              <input
+                v-model="form.email"
+                type="text"
+                name="email"
+                placeholder="Email"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.has('email') }"
+              />
+              <has-error :form="form" field="email"></has-error>
+            </div>
+
+            <div class="form-group">
+              <select
+                name="type"
+                v-model="form.type"
+                id="type"
+                class="form-control"
+                :class="{
+                  'is-invalid': form.errors.has('type'),
+                }"
+              >
+                <option value="">Select user role</option>
+                <option value="admin">Admin</option>
+                <option value="user">Standard User</option>
+                <option value="author">Author</option>
+              </select>
+              <has-error :form="form" field="type"></has-error>
+            </div>
+
+            <div class="form-group">
+              <input
+                v-model="form.password"
+                type="text"
+                name="password"
+                placeholder="Password"
+                class="form-control"
+                :class="{ 'is-invalid': form.errors.has('password') }"
+              />
+              <has-error :form="form" field="password"></has-error>
+            </div>
+          </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
-            >
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
               Close
             </button>
             <button type="button" class="btn btn-primary">Create</button>
@@ -87,7 +141,19 @@
 </template>
 
 <script>
+import Form from "vform";
+
 export default {
+  data() {
+    return {
+      form: new Form({
+        name: "",
+        email: "",
+        password: "",
+        type: "",
+      }),
+    };
+  },
   mounted() {
     console.log("Component mounted.");
   },
