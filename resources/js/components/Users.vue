@@ -25,15 +25,17 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Type</th>
+                  <th>Registered At</th>
                   <th>Modify</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>657</td>
-                  <td>Bob Doe</td>
-                  <td>ojsd@kjsd.com</td>
-                  <td>Admin</td>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.email }}</td>           
+                  <td>{{ user.type }}</td>
+                  <td>{{ user.created_at }}</td>
                   <td>
                     <a href="">
                       <i class="fa fa-edit blue"></i>
@@ -149,6 +151,7 @@ import Form from "vform";
 export default {
   data() {
     return {
+      users: {},
       form: new Form({
         name: "",
         email: "",
@@ -158,12 +161,17 @@ export default {
     };
   },
   methods:{
+    loadUsers(){
+      axios
+      .get("api/user")
+      .then(({ data }) => (this.users = data.data));
+    },
     createUser(){
       this.form.post('/api/user');
     }
   },
-  mounted() {
-    console.log("Component mounted.");
+  created() {
+    this.loadUsers();
   },
 };
 </script>
