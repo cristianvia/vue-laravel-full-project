@@ -19,6 +19,20 @@ Vue.use(VueProgressBar,{
     height:'3px'
 });
 
+//Import and make global sweet alert for custom and cute js alerts
+import swal from 'sweetalert2';
+window.swal = swal;
+
+const toast = swal.mixin({
+    toast:true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+});
+//Make toast global
+window.toast = toast;
+
+
 //Declaring global vue variables to have access to them through the whole app
 window.form = Form;
 Vue.component(HasError.name, HasError)

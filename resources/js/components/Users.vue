@@ -169,7 +169,14 @@ export default {
     createUser(){
       this.$Progress.start();
       this.form.post('/api/user');
+      
+      toast.fire({
+        icon: 'success',
+        title: 'User has been successfully created'
+      })
+      
       this.$Progress.finish();
+      $('#addNew').modal('hide');
     }
   },
   created() {
