@@ -12,6 +12,13 @@ import moment from 'moment';
 import VueRouter from 'vue-router';
 import {Form, HasError, AlertError } from 'vform';
 
+import VueProgressBar from 'vue-progressbar';
+Vue.use(VueProgressBar,{
+    color:'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height:'3px'
+});
+
 //Declaring global vue variables to have access to them through the whole app
 window.form = Form;
 Vue.component(HasError.name, HasError)
