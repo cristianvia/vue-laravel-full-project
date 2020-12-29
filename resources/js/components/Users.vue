@@ -169,18 +169,26 @@ export default {
     createUser(){
       this.$Progress.start();
       this.form.post('/api/user');
-      
+
+      //Once the createuser function is called it emits a "fire"
+      Fire.$emit('AfterCreateUser');
+
       toast.fire({
         icon: 'success',
         title: 'User has been successfully created'
       })
-      
+
       this.$Progress.finish();
+
       $('#addNew').modal('hide');
     }
   },
   created() {
     this.loadUsers();
+    //Fire listener. Once it listens the emitted event on aftercreateuser it calls again the loadusers function
+    Fire.$on('AfterCreateUser', () =>{
+      this.loadUsers();
+    });
   },
 };
 </script>

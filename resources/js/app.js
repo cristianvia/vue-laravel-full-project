@@ -32,6 +32,8 @@ const toast = swal.mixin({
 //Make toast global
 window.toast = toast;
 
+//Use the fire for creating a custom event
+window.Fire = new Vue();
 
 //Declaring global vue variables to have access to them through the whole app
 window.form = Form;

@@ -2197,7 +2197,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     createUser: function createUser() {
       this.$Progress.start();
-      this.form.post('/api/user');
+      this.form.post('/api/user'); //Once the createuser function is called it emits a "fire"
+
+      Fire.$emit('AfterCreateUser');
       toast.fire({
         icon: 'success',
         title: 'User has been successfully created'
@@ -2207,7 +2209,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.loadUsers();
+    var _this2 = this;
+
+    this.loadUsers(); //Fire listener. Once it listens the emitted event on aftercreateuser it calls again the loadusers function
+
+    Fire.$on('AfterCreateUser', function () {
+      _this2.loadUsers();
+    });
   }
 });
 
@@ -79835,7 +79843,9 @@ var toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
   timer: 3000
 }); //Make toast global
 
-window.toast = toast; //Declaring global vue variables to have access to them through the whole app
+window.toast = toast; //Use the fire for creating a custom event
+
+window.Fire = new Vue(); //Declaring global vue variables to have access to them through the whole app
 
 window.form = vform__WEBPACK_IMPORTED_MODULE_2__["Form"];
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_2__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_2__["HasError"]);
