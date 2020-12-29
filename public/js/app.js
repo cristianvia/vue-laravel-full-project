@@ -2196,25 +2196,29 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
-      this.$Progress.start();
-      this.form.post('/api/user'); //Once the createuser function is called it emits a "fire"
+      var _this2 = this;
 
-      Fire.$emit('AfterCreateUser');
-      toast.fire({
-        icon: 'success',
-        title: 'User has been successfully created'
+      this.$Progress.start();
+      this.form.post("/api/user").then(function () {
+        //Once the createuser function is called it emits a "fire"
+        Fire.$emit("AfterCreateUser");
+        $("#addNew").modal("hide");
+        toast.fire({
+          icon: "success",
+          title: "User has been successfully created"
+        });
+
+        _this2.$Progress.finish();
       });
-      this.$Progress.finish();
-      $('#addNew').modal('hide');
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.loadUsers(); //Fire listener. Once it listens the emitted event on aftercreateuser it calls again the loadusers function
 
-    Fire.$on('AfterCreateUser', function () {
-      _this2.loadUsers();
+    Fire.$on("AfterCreateUser", function () {
+      _this3.loadUsers();
     });
   }
 });
@@ -64528,7 +64532,7 @@ var staticRenderFns = [
           staticClass: "btn btn-danger",
           attrs: { type: "button", "data-dismiss": "modal" }
         },
-        [_vm._v("\n            Close\n          ")]
+        [_vm._v("\n              Close\n            ")]
       ),
       _vm._v(" "),
       _c(
