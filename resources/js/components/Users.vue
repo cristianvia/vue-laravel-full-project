@@ -32,10 +32,10 @@
               <tbody>
                 <tr v-for="user in users" :key="user.id">
                   <td>{{ user.id }}</td>
-                  <td>{{ user.name }}</td>
+                  <td>{{ user.name | upText }}</td>
                   <td>{{ user.email }}</td>           
                   <td>{{ user.type }}</td>
-                  <td>{{ user.created_at }}</td>
+                  <td>{{ user.created_at | myDate}}</td>
                   <td>
                     <a href="">
                       <i class="fa fa-edit blue"></i>
