@@ -41,7 +41,7 @@
                       <i class="fa fa-edit blue"></i>
                       &nbsp;
                     </a>
-                    <a href="">
+                    <a href="#" @click="deleteUser(user.id)">
                       <i class="fa fa-trash red"></i>
                     </a>
                   </td>
@@ -168,7 +168,7 @@ export default {
       this.$Progress.start();
       this.form.post("/api/user").then(() => {
         //Once the createuser function is called it emits a "fire"
-        Fire.$emit("AfterCreateUser");
+        Fire.$emit("AfterUserRefresh");
         $("#addNew").modal("hide");
 
         toast.fire({
@@ -178,11 +178,37 @@ export default {
         this.$Progress.finish();
       });
     },
+    deleteUser(id) {
+      swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          //Send ajax request to server
+          this.form
+            .delete("/api/user/" + id)
+            .then(() => {
+              if (result.isConfirmed) {
+                swal.fire("Deleted!", "This user has been deleted.", "success");
+                Fire.$emit("AfterUserRefresh");
+              }
+            })
+            .catch(() => {
+              swal("Failed!", "Something went wrong");
+            });
+        });
+    },
   },
   created() {
     this.loadUsers();
-    //Fire listener. Once it listens the emitted event on aftercreateuser it calls again the loadusers function
-    Fire.$on("AfterCreateUser", () => {
+    //Fire listener. Once it listens the emitted event on AfterUserRefresh it calls again the loadusers function
+    Fire.$on("AfterUserRefresh", () => {
       this.loadUsers();
     });
   },

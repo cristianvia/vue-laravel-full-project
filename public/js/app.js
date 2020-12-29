@@ -2201,7 +2201,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$Progress.start();
       this.form.post("/api/user").then(function () {
         //Once the createuser function is called it emits a "fire"
-        Fire.$emit("AfterCreateUser");
+        Fire.$emit("AfterUserRefresh");
         $("#addNew").modal("hide");
         toast.fire({
           icon: "success",
@@ -2210,15 +2210,38 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.$Progress.finish();
       });
+    },
+    deleteUser: function deleteUser(id) {
+      var _this3 = this;
+
+      swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        //Send ajax request to server
+        _this3.form["delete"]("/api/user/" + id).then(function () {
+          if (result.isConfirmed) {
+            swal.fire("Deleted!", "This user has been deleted.", "success");
+            Fire.$emit("AfterUserRefresh");
+          }
+        })["catch"](function () {
+          swal("Failed!", "Something went wrong");
+        });
+      });
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
-    this.loadUsers(); //Fire listener. Once it listens the emitted event on aftercreateuser it calls again the loadusers function
+    this.loadUsers(); //Fire listener. Once it listens the emitted event on AfterUserRefresh it calls again the loadusers function
 
-    Fire.$on("AfterCreateUser", function () {
-      _this3.loadUsers();
+    Fire.$on("AfterUserRefresh", function () {
+      _this4.loadUsers();
     });
   }
 });
@@ -64209,7 +64232,22 @@ var render = function() {
                       _vm._v(_vm._s(_vm._f("myDate")(user.created_at)))
                     ]),
                     _vm._v(" "),
-                    _vm._m(2, true)
+                    _c("td", [
+                      _vm._m(2, true),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteUser(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-trash red" })]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -64487,15 +64525,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "" } }, [
-        _c("i", { staticClass: "fa fa-edit blue" }),
-        _vm._v("\n                     \n                  ")
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "" } }, [
-        _c("i", { staticClass: "fa fa-trash red" })
-      ])
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "fa fa-edit blue" }),
+      _vm._v("\n                     \n                  ")
     ])
   },
   function() {
