@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import moment from 'moment';
 
 import VueRouter from 'vue-router';
 import {Form, HasError, AlertError } from 'vform';
@@ -15,6 +16,17 @@ import {Form, HasError, AlertError } from 'vform';
 window.form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
+
+//Global variable for filters
+//Capitalize letter of a word
+Vue.filter('upText', function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1)
+});
+
+//Filter date
+Vue.filter('myDate', function(created){
+    return moment(created).format('MMMM Do YYYY');
+});
 
 Vue.use(VueRouter);
 
@@ -29,6 +41,7 @@ const router = new VueRouter({
     routes,
     linkActiveClass: 'active'
 })
+
 
 /**
  * The following block of code may be used to automatically register your
