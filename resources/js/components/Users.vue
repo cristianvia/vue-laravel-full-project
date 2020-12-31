@@ -61,7 +61,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addNewLabel">Add new</h5>
+            <h5 v-show="!editMode" class="modal-title" id="addNewLabel">Add new</h5>
+            <h5 v-show="editMode" class="modal-title" id="addNewLabel">Edit user</h5>
             <button
               type="button"
               class="close"
@@ -71,7 +72,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form @submit.prevent="createUser">
+          <form @submit.prevent="editMode ? updateUser() : createUser()">
             <div class="modal-body">
               <div class="form-group">
                 <input
@@ -132,7 +133,8 @@
               <button type="button" class="btn btn-danger" data-dismiss="modal">
                 Close
               </button>
-              <button type="submit" class="btn btn-primary">Create</button>
+              <button v-show="!editMode" type="submit" class="btn btn-primary">Create</button>
+              <button v-show="editMode" type="submit" class="btn btn-success">Update</button>
             </div>
           </form>
         </div>
@@ -147,6 +149,7 @@ import Form from "vform";
 export default {
   data() {
     return {
+      editMode: false,
       users: {},
       form: new Form({
         name: "",
@@ -157,12 +160,16 @@ export default {
     };
   },
   methods: {
-    newModal(){
+    updateUser() {
+
+    },
+    newModal() {
       this.form.reset();
       $("#addNew").modal("show");
     },
 
-    editModal(user){
+    editModal(user) {
+      this.editMode = true;
       this.form.reset();
       $("#addNew").modal("show");
       this.form.fill(user);
@@ -172,6 +179,7 @@ export default {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
     createUser() {
+      this.editMode = false;
       this.$Progress.start();
       this.form.post("/api/user").then(() => {
         //Once the createuser function is called it emits a "fire"
