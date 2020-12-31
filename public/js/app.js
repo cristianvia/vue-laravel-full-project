@@ -2171,6 +2171,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2178,6 +2186,7 @@ __webpack_require__.r(__webpack_exports__);
       editMode: false,
       users: {},
       form: new vform__WEBPACK_IMPORTED_MODULE_0___default.a({
+        id: "",
         name: "",
         email: "",
         password: "",
@@ -2186,7 +2195,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    updateUser: function updateUser() {},
+    updateUser: function updateUser() {
+      var _this = this;
+
+      this.$Progress.start();
+      this.form.put("api/user/" + this.form.id).then(function () {
+        $("#addNew").modal("hide");
+        swal.fire("Updated!", "This user has been updated.", "success");
+        Fire.$emit("AfterUserRefresh");
+
+        _this.$Progress.finish();
+      })["catch"](function () {
+        _this.$Progress.fail();
+      });
+    },
     newModal: function newModal() {
       this.form.reset();
       $("#addNew").modal("show");
@@ -2198,15 +2220,15 @@ __webpack_require__.r(__webpack_exports__);
       this.form.fill(user);
     },
     loadUsers: function loadUsers() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("api/user").then(function (_ref) {
         var data = _ref.data;
-        return _this.users = data.data;
+        return _this2.users = data.data;
       });
     },
     createUser: function createUser() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.editMode = false;
       this.$Progress.start();
@@ -2219,11 +2241,11 @@ __webpack_require__.r(__webpack_exports__);
           title: "User has been successfully created"
         });
 
-        _this2.$Progress.finish();
+        _this3.$Progress.finish();
       });
     },
     deleteUser: function deleteUser(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       swal.fire({
         title: "Are you sure?",
@@ -2235,7 +2257,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         //Send ajax request to server
-        _this3.form["delete"]("/api/user/" + id).then(function () {
+        _this4.form["delete"]("/api/user/" + id).then(function () {
           if (result.isConfirmed) {
             swal.fire("Deleted!", "This user has been deleted.", "success");
             Fire.$emit("AfterUserRefresh");
@@ -2247,12 +2269,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.loadUsers(); //Fire listener. Once it listens the emitted event on AfterUserRefresh it calls again the loadusers function
 
     Fire.$on("AfterUserRefresh", function () {
-      _this4.loadUsers();
+      _this5.loadUsers();
     });
   }
 });
@@ -64325,7 +64347,7 @@ var render = function() {
                   staticClass: "modal-title",
                   attrs: { id: "addNewLabel" }
                 },
-                [_vm._v("Add new")]
+                [_vm._v("\n            Add new\n          ")]
               ),
               _vm._v(" "),
               _c(
@@ -64342,7 +64364,7 @@ var render = function() {
                   staticClass: "modal-title",
                   attrs: { id: "addNewLabel" }
                 },
-                [_vm._v("Edit user")]
+                [_vm._v("\n            Edit user\n          ")]
               ),
               _vm._v(" "),
               _vm._m(1)
@@ -64567,7 +64589,7 @@ var render = function() {
                       staticClass: "btn btn-primary",
                       attrs: { type: "submit" }
                     },
-                    [_vm._v("Create")]
+                    [_vm._v("\n              Create\n            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -64584,7 +64606,7 @@ var render = function() {
                       staticClass: "btn btn-success",
                       attrs: { type: "submit" }
                     },
-                    [_vm._v("Update")]
+                    [_vm._v("\n              Update\n            ")]
                   )
                 ])
               ]

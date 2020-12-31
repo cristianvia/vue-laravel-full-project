@@ -61,8 +61,12 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 v-show="!editMode" class="modal-title" id="addNewLabel">Add new</h5>
-            <h5 v-show="editMode" class="modal-title" id="addNewLabel">Edit user</h5>
+            <h5 v-show="!editMode" class="modal-title" id="addNewLabel">
+              Add new
+            </h5>
+            <h5 v-show="editMode" class="modal-title" id="addNewLabel">
+              Edit user
+            </h5>
             <button
               type="button"
               class="close"
@@ -133,8 +137,12 @@
               <button type="button" class="btn btn-danger" data-dismiss="modal">
                 Close
               </button>
-              <button v-show="!editMode" type="submit" class="btn btn-primary">Create</button>
-              <button v-show="editMode" type="submit" class="btn btn-success">Update</button>
+              <button v-show="!editMode" type="submit" class="btn btn-primary">
+                Create
+              </button>
+              <button v-show="editMode" type="submit" class="btn btn-success">
+                Update
+              </button>
             </div>
           </form>
         </div>
@@ -152,6 +160,7 @@ export default {
       editMode: false,
       users: {},
       form: new Form({
+        id: "",
         name: "",
         email: "",
         password: "",
@@ -161,7 +170,18 @@ export default {
   },
   methods: {
     updateUser() {
-
+      this.$Progress.start();
+      this.form
+        .put("api/user/" + this.form.id)
+        .then(() => {
+          $("#addNew").modal("hide");
+          swal.fire("Updated!", "This user has been updated.", "success");
+          Fire.$emit("AfterUserRefresh");
+          this.$Progress.finish();
+        })
+        .catch(() => {
+          this.$Progress.fail();
+        });
     },
     newModal() {
       this.form.reset();
