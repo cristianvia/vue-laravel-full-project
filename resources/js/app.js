@@ -10,13 +10,13 @@ window.Vue = require('vue');
 import moment from 'moment';
 
 import VueRouter from 'vue-router';
-import {Form, HasError, AlertError } from 'vform';
+import { Form, HasError, AlertError } from 'vform';
 
 import VueProgressBar from 'vue-progressbar';
-Vue.use(VueProgressBar,{
-    color:'rgb(143, 255, 199)',
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
     failedColor: 'red',
-    height:'3px'
+    height: '3px'
 });
 
 //Import and make global sweet alert for custom and cute js alerts
@@ -24,7 +24,7 @@ import swal from 'sweetalert2';
 window.swal = swal;
 
 const toast = swal.mixin({
-    toast:true,
+    toast: true,
     position: 'top-end',
     showConfirmButton: false,
     timer: 3000
@@ -42,21 +42,22 @@ Vue.component(AlertError.name, AlertError)
 
 //Global variable for filters
 //Capitalize letter of a word
-Vue.filter('upText', function(text){
+Vue.filter('upText', function (text) {
     return text.charAt(0).toUpperCase() + text.slice(1)
 });
 
 //Filter date
-Vue.filter('myDate', function(created){
+Vue.filter('myDate', function (created) {
     return moment(created).format('MMMM Do YYYY');
 });
 
 Vue.use(VueRouter);
 
 let routes = [
-    {path: '/dashboard', component: require('./components/Dashboard.vue').default},
-    {path: '/profile', component: require('./components/Profile.vue').default},
-    {path: '/users', component: require('./components/Users.vue').default},
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/profile', component: require('./components/Profile.vue').default },
+    { path: '/users', component: require('./components/Users.vue').default },
+    { path: '/developer', component: require('./components/Developer.vue').default },
 ]
 
 const router = new VueRouter({
@@ -76,6 +77,7 @@ const router = new VueRouter({
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
